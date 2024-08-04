@@ -1,9 +1,6 @@
 package com.proyectum.cqrs.query;
 
-import com.proyectum.cqrs.query.Query;
-import com.proyectum.cqrs.query.QueryBus;
-import com.proyectum.cqrs.query.QueryHandler;
-import com.proyectum.users.boot.config.ddd.exceptions.UnknownCommandHandlerException;
+import com.proyectum.cqrs.exceptions.UnknownCommandHandlerException;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
