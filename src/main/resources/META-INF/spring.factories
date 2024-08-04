@@ -1,1 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.proyectum.cqrs.config.CqrsAutoConfigurationClass
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.proyectum.cqrs.config.CqrsAutoConfiguration
