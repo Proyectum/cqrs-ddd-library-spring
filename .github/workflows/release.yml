@@ -1,0 +1,59 @@
+name: Create Release and Publish Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Build with Maven
+        env:
+          MAVEN_GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: mvn clean package --settings .github/maven-settings.xml
+
+      - name: Publish to GitHub Packages
+        env:
+          MAVEN_GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: mvn deploy --settings .github/maven-settings.xml
+
+      - name: Extract version from pom.xml
+        id: extract_version
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/^v//')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          # Create the GitHub Release
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d '{"tag_name": "'"$VERSION"'", "name": "'"$VERSION"'", "body": "Release for version '"$VERSION"'"}' \
+          https://api.github.com/repos/${{ github.repository }}/releases
+
+      - name: Create and Push Tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          # Configure Git
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d '{
+          "ref": "refs/tags/'"$VERSION"'",
+          "sha": "'"$(git rev-parse HEAD)"'"
+          }' \
+          https://api.github.com/repos/${{ github.repository }}/git/refs
