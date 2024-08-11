@@ -1,6 +1,6 @@
 package com.proyectum.cqrs.query;
 
-import com.proyectum.cqrs.exceptions.UnknownCommandHandlerException;
+import com.proyectum.cqrs.exceptions.UnknownQueryHandlerException;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
@@ -15,7 +15,7 @@ public class QueryBusImpl implements QueryBus {
     public <R> R ask(Query query) {
         var handler = handlers.get(query.getClass());
         if (Objects.isNull(handler)) {
-            throw new UnknownCommandHandlerException("No handler found for query " + query.getClass());
+            throw new UnknownQueryHandlerException("No handler found for query " + query.getClass());
         }
         return (R) handler.ask(query);
     }

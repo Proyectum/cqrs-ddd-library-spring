@@ -2,8 +2,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.proyectum</groupId>
-  <artifactId>cqrs-ddd-library-spring-boot-starter</artifactId>
-  <version>1.0.0</version>
+  <artifactId>cqrs-ddd-library-spring</artifactId>
+  <version>1.1.0</version>
   <name>CQRS - DDD - Spring Library</name>
 
   <properties>
@@ -13,6 +13,7 @@
     <!-- Set the encoding -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <spring.boot.version>3.3.2</spring.boot.version>
   </properties>
 
   <build>
@@ -46,33 +47,41 @@
     </repository>
   </distributionManagement>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring.boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>jakarta.transaction</groupId>
       <artifactId>jakarta.transaction-api</artifactId>
       <version>2.0.1</version>
-      <scope>provided</scope>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-autoconfigure -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>3.3.0</version>
-      <scope>provided</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>6.1.5</version>
-      <scope>provided</scope>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.34</version>
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>com.proyectum</groupId>
       <artifactId>cqrs-ddd-library</artifactId>
